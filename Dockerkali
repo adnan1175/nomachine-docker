@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     xterm \
     pulseaudio \
     cups \
-    mate-desktop-environment-core \
+    kali-desktop-xfce\
     wget \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
