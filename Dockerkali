@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Download and install NoMachine package
-RUN wget https://download.nomachine.com/download/7.10/Linux/nomachine_7.10.1_1_amd64.deb -O /tmp/nomachine.deb && \
+RUN wget https://download.nomachine.com/download/8.13/Linux/nomachine_8.13.1_1_amd64.deb -O /tmp/nomachine.deb && \
     dpkg -i /tmp/nomachine.deb && \
     apt-get install -f -y && \
     rm /tmp/nomachine.deb
