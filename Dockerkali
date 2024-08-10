@@ -1,0 +1,38 @@
+# Use the official Kali Linux base image
+FROM kalilinux/kali-rolling
+
+# Disable interactive prompts during package installations
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update package lists and install necessary packages
+RUN apt-get update && apt-get install -y \
+    vim \
+    xterm \
+    pulseaudio \
+    cups \
+    mate-desktop-environment-core \
+    wget \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Download and install NoMachine package
+RUN wget https://download.nomachine.com/download/7.10/Linux/nomachine_7.10.1_1_amd64.deb -O /tmp/nomachine.deb && \
+    dpkg -i /tmp/nomachine.deb && \
+    apt-get install -f -y && \
+    rm /tmp/nomachine.deb
+
+# Create a user and group for NoMachine
+RUN groupadd -r nomachine -g 433 && \
+    useradd -u 431 -r -g nomachine -d /home/nomachine -s /bin/bash -c "NoMachine" nomachine && \
+    mkdir /home/nomachine && \
+    chown -R nomachine:nomachine /home/nomachine && \
+    echo 'nomachine:nomachine' | chpasswd
+
+# Expose the NoMachine port
+EXPOSE 4000
+
+# Add a startup script
+ADD nxserver.sh /nxserver.sh
+RUN chmod +x /nxserver.sh
+
+# Set the entry point to the startup script
+ENTRYPOINT ["/nxserver.sh"]
